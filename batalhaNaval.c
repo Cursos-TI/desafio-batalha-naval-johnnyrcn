@@ -2,23 +2,32 @@
 
 int main(){
 
-    //matrizes do tabuleiro
+    //variáveis utilizadas para imprimir o tabuleiro e os respectivos navios
     char letras[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
     int tabuleiro[10][10] = {0};
 
-    //posicionando os navios no tabuleiro
-    tabuleiro[9][2] = 3;
-    tabuleiro[9][3] = 3;
-    tabuleiro[9][4] = 3;
+    //define a posição do navio vertical
+    for(int i = 3 ; i < 6 ; i++){
+        tabuleiro[i][7] = 3;
+    }
 
-    tabuleiro[3][7] = 3;
-    tabuleiro[4][7] = 3;
-    tabuleiro[5][7] = 3;
+    //define a posição do navio horizontal
+    for(int i = 3 ; i < 6 ; i++){
+        tabuleiro[9][i] = 3;
+    }
 
+    //define a posição dos navios  nas diagonais
+    for(int i = 0, j = 2 ; i < 3 && j < 5 ; i++, j++){
+        tabuleiro[i][j] = 3;
+    }
+
+    for(int i = 7, j = 0 ; i > 4 && j < 3 ; i--, j++){
+        tabuleiro[i][j] = 3;
+    }
+
+    //imprime o tabuleiro e a localização dos navios
     printf("      JOGO DE BATALHA NAVAL   \n");
     printf("  ");
-
-    //imprinindo o tabuleiro
     for(int i = 0; i < 10; i++) {
         printf("  %c", letras[i]);
     }
