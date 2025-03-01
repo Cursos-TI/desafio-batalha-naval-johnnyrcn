@@ -1,41 +1,109 @@
 #include <stdio.h>
 
-int main(){
+#define LINHAS 10
+#define COLUNAS 10
 
-    //variáveis utilizadas para imprimir o tabuleiro e os respectivos navios
+void usarHabilidade(int tabuleiro[LINHAS][COLUNAS], int matrizHabilidade[5][5], int posicaoX, int posicaoY) {
+    int a = posicaoX - 2;
+    int b = posicaoY - 2;
+
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            int x = a + i;
+            int y = b + j;
+            if (x >= 0 && x < LINHAS && y >= 0 && y < COLUNAS) {
+                if (tabuleiro[x][y] == 3 && matrizHabilidade[i][j] == 1) {
+                    tabuleiro[x][y] = 1;
+                } else {
+                tabuleiro[x][y] += matrizHabilidade[i][j];
+                }
+            }
+        }
+    }
+}
+
+int main() {
     char letras[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
-    int tabuleiro[10][10] = {0};
+    int tabuleiro[LINHAS][COLUNAS] = {0};
+    int matrizCONE[5][5] = {0};
+    int matrizCRUZ[5][5] = {0};
+    int matrizOCTAEDRO[5][5] = {0};
 
-    //define a posição do navio vertical
-    for(int i = 3 ; i < 6 ; i++){
+    // Define a posição do navio vertical
+    for (int i = 3; i < 6; i++) {
         tabuleiro[i][7] = 3;
     }
 
-    //define a posição do navio horizontal
-    for(int i = 3 ; i < 6 ; i++){
+    // Define a posição do navio horizontal
+    for (int i = 3; i < 6; i++) {
         tabuleiro[9][i] = 3;
     }
 
-    //define a posição dos navios  nas diagonais
-    for(int i = 0, j = 2 ; i < 3 && j < 5 ; i++, j++){
+    // Define a posição dos navios nas diagonais
+    for (int i = 0, j = 2; i < 3 && j < 5; i++, j++) {
         tabuleiro[i][j] = 3;
     }
 
-    for(int i = 7, j = 0 ; i > 4 && j < 3 ; i--, j++){
+    for (int i = 7, j = 0; i > 4 && j < 3; i--, j++) {
         tabuleiro[i][j] = 3;
     }
 
-    //imprime o tabuleiro e a localização dos navios
+    // Define as habilidades usadas no tabuleiro
+    // Cone
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (i == 1 && j == 2) {
+                matrizCONE[i][j] = 1;
+            } else if (i == 2 && (j == 1 || j == 2 || j == 3)) {
+                matrizCONE[i][j] = 1;
+            } else if (i == 3 && (j == 0 || j == 1 || j == 2 || j == 3 || j == 4)) {
+                matrizCONE[i][j] = 1;
+            }
+        }
+    }
+
+    // Octaedro
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (i == 1 && j == 2) {
+                matrizOCTAEDRO[i][j] = 1;
+            } else if (i == 2 && (j == 1 || j == 2 || j == 3)) {
+                matrizOCTAEDRO[i][j] = 1;
+            } else if (i == 3 && j == 2) {
+                matrizOCTAEDRO[i][j] = 1;
+            }
+        }
+    }
+
+    // Cruz
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (i == 1 && j == 2) {
+                matrizCRUZ[i][j] = 1;
+            } else if (i == 2 && (j == 0 || j == 1 || j == 2 || j == 3 || j == 4)) {
+                matrizCRUZ[i][j] = 1;
+            } else if (i == 3 && j == 2) {
+                matrizCRUZ[i][j] = 1;
+            }
+        }
+    }
+
+    // Aplicar habilidade no tabuleiro, centrando no ponto de origem (exemplo: (5, 5))
+    usarHabilidade(tabuleiro, matrizOCTAEDRO, 1, 8);
+    usarHabilidade(tabuleiro, matrizCONE, 2, 3);
+    usarHabilidade(tabuleiro, matrizCRUZ, 7, 7);
+
+    // Imprime o tabuleiro e todas as peças em jogo
     printf("      JOGO DE BATALHA NAVAL   \n");
     printf("  ");
-    for(int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++) {
         printf("  %c", letras[i]);
     }
 
-    for(int i = 0; i < 10; i++){
+    for (int i = 0; i < LINHAS; i++) {
         printf("\n%2d", i + 1);
         printf("  ");
-        for(int j = 0; j < 10; j++){
+        for (int j = 0; j < COLUNAS; j++) {
             printf("%d  ", tabuleiro[i][j]);
         }
     }
